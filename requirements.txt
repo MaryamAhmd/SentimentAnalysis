@@ -1,0 +1,10 @@
+graphviz==0.20.1
+matplotlib==3.3.4
+numpy==1.20.1
+pandas==1.2.4
+scikit_learn==1.2.1
+seaborn==0.11.1
+streamlit==1.17.0
+streamlit_option_menu==0.3.2
+tweepy==4.12.0
+~treamlit==1.14.0
