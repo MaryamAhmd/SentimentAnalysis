@@ -83,7 +83,7 @@ def main():
      
      #reading file
      #DATASET_COLUMNS=['text','Category']
-     df2 = pd.read_excel('D:\\FYP Final Destination\\UrduAnnotatedDataset.xlsx')
+     df2 = pd.read_excel('UrduAnnotatedDataset.xlsx')
      #print(df2['Text'])
      
      shuffled_df2= shuffle(df2, random_state=1)
