@@ -29,18 +29,12 @@ def main():
      auth = tweepy.OAuthHandler( consumer_key , consumer_secret )
      auth.set_access_token( access_token , access_token_secret )
      api = tweepy.API(auth)
-     
-     
-     
-     
+         
      urdu_punctuations = string.punctuation
-     punctuations_list = urdu_punctuations
-     
-    
+     punctuations_list = urdu_punctuations   
      
      #empty data frame with column names
      df = pd.DataFrame(columns=["Date","User","IsVerified","Text","Likes","RT",'User_location'])
-     print(df)
      
      #extracting tweets related to the topic
      def get_tweets(Topic,Count):    
@@ -84,14 +78,12 @@ def main():
      #reading file
      #DATASET_COLUMNS=['text','Category']
      df2 = pd.read_excel('UrduAnnotatedDataset.xlsx')
-     #print(df2['Text'])
      
      shuffled_df2= shuffle(df2, random_state=1)
      #using shuffled dataframe so testing isnt dedicated to 1 topic only
      X=shuffled_df2.Text
      #Y= labels
      Y=shuffled_df2.Annotator3
-     print(shuffled_df2.Text.head(10))
 
      # Separating the 70% data for training data and 30% for testing data
      X_train, X_test, y_train, y_test = train_test_split(X,Y,test_size = 0.2)
@@ -101,7 +93,7 @@ def main():
      #best accuracy at 5000
      #fitting(header is passed to vectoriser) trainting data to vectoriser 
      vectoriser.fit(X_train)
-     print('No. of feature_words: ', len(vectoriser.get_feature_names()))
+
      #transforming train and test into vectors for machine learning models
      X_train = vectoriser.transform(X_train)
      X_test  = vectoriser.transform(X_test)
