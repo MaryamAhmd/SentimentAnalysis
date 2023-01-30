@@ -7,4 +7,4 @@ seaborn==0.11.1
 streamlit==1.17.0
 streamlit_option_menu==0.3.2
 tweepy==4.12.0
-~treamlit==1.14.0
+streamlit==1.14.0
