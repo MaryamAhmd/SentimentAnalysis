@@ -169,7 +169,7 @@ def main():
                     if st.button("See the Original Extracted Data"):
                         #st.markdown(html_temp, unsafe_allow_html=True)
                         st.success("Below is the Original Extracted Data :")
-                        st.write(df.head(50))
+                        st.write(df.head(500))
          
                     df['Text'] = df['Text'].apply(lambda x: cleaning_punctuations(x))
                     df['Text'] = df['Text'].apply(lambda x: cleaning_URLs(x))
@@ -181,7 +181,7 @@ def main():
                     if st.button("See the Cleaned Data"):
                         #st.markdown(html_temp, unsafe_allow_html=True)
                         st.success("Below is the Cleaned Data :")
-                        st.write(df.head(50))  
+                        st.write(df.head(500))  
                
              if selected == "Accuracy":
                      st.title('Accuracy of the Analysis')
@@ -244,7 +244,7 @@ def main():
                      X_test3  = vectoriser.transform(df.Text)
                      y_pred3 = RFmodel.predict(X_test3)#prediction
                      df["Prediction"] = y_pred3
-                     st.write(df.head(50))
+                     st.write(df.head(500))
                      st.title('Plots')
                      if st.button("Get Count Plot for Different Sentiments"):
                          st.success("Generating A Count Plot")
