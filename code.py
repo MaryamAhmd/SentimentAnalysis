@@ -57,7 +57,8 @@ def main():
                  break
              else:
                  pass
-     #preprocessing       
+               
+     #cleaning       
   
      def cleaning_punctuations(text):
              translator = str.maketrans('', '', punctuations_list)
@@ -81,38 +82,50 @@ def main():
      
      shuffled_df2= shuffle(df2, random_state=1)
      #using shuffled dataframe so testing isnt dedicated to 1 topic only
+     #X= input reviews
      X=shuffled_df2.Text
      #Y= labels
      Y=shuffled_df2.Annotator3
 
-     # Separating the 70% data for training data and 30% for testing data
+     # Separating the 80% data for training data and 20% for testing data
      X_train, X_test, y_train, y_test = train_test_split(X,Y,test_size = 0.2)
+     
      #to extract features from text - both 1 ngram and 2 ngram features 
      vectoriser = TfidfVectorizer(ngram_range=(1,2), max_features=5000)
-     #search ngram and word - 123 ko combine kr lain
      #best accuracy at 5000
-     #fitting(header is passed to vectoriser) trainting data to vectoriser 
+     
+     #fitting(header is passed to vectoriser) training data to vectoriser 
      vectoriser.fit(X_train)
 
      #transforming train and test into vectors for machine learning models
      X_train = vectoriser.transform(X_train)
      X_test  = vectoriser.transform(X_test)
-     
+    
+     #training on 80% of the input
      BNBmodel = BernoulliNB()
      #fit data(input of training data, output of training data)                
      BNBmodel.fit(X_train, y_train)
-     #evaluation  - F1 score, accuracy etc
      
-     SVCmodel = LinearSVC()#training on 80% of the input
-     SVCmodel.fit(X_train, y_train)#fit data
+     #training on 80% of the input
+     SVCmodel = LinearSVC()
+     #fit data
+     SVCmodel.fit(X_train, y_train)
      
-     LRmodel = LogisticRegression()#training on 80% of the input --- default parameters removed
-     LRmodel.fit(X_train, y_train)#fit data
+     #training on 80% of the input 
+     LRmodel = LogisticRegression()
+     #fit data
+     LRmodel.fit(X_train, y_train)
      
+     #training on 80% of the input
      RFmodel = RandomForestClassifier()
+     #fit data
      RFmodel.fit(X_train, y_train)
+   
+     #Front end started
      
+     #Handles warnings/exceptions
      @st.cache(suppress_st_warning=True)
+     #Multi-paging in streamlit
      def get_fvalue(val):
          feature_dict = {"No":1,"Yes":2}
          for key,value in feature_dict.items():
@@ -123,9 +136,13 @@ def main():
          for key,value in my_dict.items():
              if val == key:
                  return value
+          
      st.sidebar.title("Select Mode")
      app_mode = st.sidebar.radio('',['About Us','Sentiment Analysis']) #two pages
+     
+     #Selected Mode
      if app_mode=='About Us':
+         #Information about the project
          with st.container():
              st.subheader(":wave: Hello,")
              st.title('Real-time Extraction of Urdu tweets')  
@@ -152,6 +169,7 @@ def main():
              st.title('Extract Urdu tweets:')   
              Topic = str()
              Topic = str(st.text_input("Enter the topic you are interested in (Press Enter once done)"))   
+          
              if len(Topic) > 0 :
                 get_tweets(Topic , Count=500)
      
@@ -164,6 +182,7 @@ def main():
                      menu_title="Menu",
                      options=["Extract Tweets","Extracted Data","Accuracy","Prediction & Visualization"],
                      icons=["twitter","","","file-bar-graph"])
+                    
              if selected == "Extracted Data":
                     st.title('View Extracted Data')
                     if st.button("See the Original Extracted Data"):
@@ -193,20 +212,25 @@ def main():
                          y_pred = model.predict(X_test) #inbuilt prediction
                          # Print the evaluation metrics for the dataset.
                          #st.write('Classification report: ',classification_report(y_test, y_pred))
+                         
                          st.title("Accuracy Metrics")
                          accuracy = accuracy_score(y_test, y_pred)
                          formatted_accuracy = "{:.2f}".format(accuracy)
                          st.write('Accuracy: ', formatted_accuracy)
+                         
                          f1score = f1_score(y_test, y_pred, average="macro")
                          formatted_f1score = "{:.2f}".format(f1score)
                          st.write('F1-Score: ', formatted_f1score)
+                         
                          precision = precision_score(y_test, y_pred, average="macro")
                          formatted_precision = "{:.2f}".format(precision)
                          st.write('Precision: ', formatted_precision)
+                         
                          recall = recall_score(y_test, y_pred, average="macro")
                          formatted_recall = "{:.2f}".format(recall)
                          st.write('Recall: ', formatted_recall)
                          print(classification_report(y_test, y_pred))
+                         
                          st.title("Generating A confusion matrix")
                          # Compute and plot the Confusion matrix
                          fig, ax = plt.subplots()
@@ -230,13 +254,16 @@ def main():
                          model_Evaluate(BNBmodel)
                     
                      if st.button("Generate confusion matrix for SVM"):
-                         model_Evaluate(SVCmodel)#evaluation             
+                         #evaluation
+                         model_Evaluate(SVCmodel)             
                     
                      if st.button("Generate confusion matrix for Logistic Regression"):
-                         model_Evaluate(LRmodel)#evaluation 
+                         #evaluation
+                         model_Evaluate(LRmodel) 
                 
                      if st.button("Generate confusion matrix for Random Forest"):
-                         model_Evaluate(RFmodel)#evaluation
+                         #evaluation
+                         model_Evaluate(RFmodel)
 
 
              if selected == "Prediction & Visualization":
@@ -246,6 +273,7 @@ def main():
                      df["Prediction"] = y_pred3
                      st.write(df.head(500))
                      st.title('Plots')
+                         
                      if st.button("Get Count Plot for Different Sentiments"):
                          st.success("Generating A Count Plot")
                          st.subheader(" Count Plot for Different Sentiments")
