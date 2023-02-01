@@ -145,7 +145,7 @@ def main():
              st.subheader("The final year project is created by:")
              st.text("Maryam Ahmed")
              st.text("Arha Amir Azeem")
-             st.text("Maheen Kalid")
+             st.text("Maheen Khalid")
 
      elif app_mode == 'Sentiment Analysis':
        
